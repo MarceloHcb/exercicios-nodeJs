@@ -1,8 +1,9 @@
-const { readMissionsData } = require('./utils/fsUtils');
+const { readMissionsData, whiteNewMissionData } = require('./utils/fsUtils');
 
 async function main() {
-  const missions = await readMissionsData();
-  console.log(missions);
+  whiteNewMissionData({
+    planet6: 'Urano',
+  });
 }
 
 main();
