@@ -8,6 +8,7 @@ const {
 
 const app = express();
 app.use(express.json());
+
 app.get('/missions', async (_requisition, response) => {
   const missions = await readMissionsData();
   return response.status(200).json({ missions });
@@ -19,14 +20,24 @@ app.post('/missions', async (req, res) => {
   return res.status(201).json({ mission: newMissionWithId });
 });
 
-app.put('/missions/:id', async (req, res) => {
+const validateMissionID = (req, res, next) => {
+  const { id } = req.params;
+  const idAsNumber = Number(id);
+  if (Number.isNaN(idAsNumber)) {
+    res.status(400).send({ message: 'ID inválido! Precisa ser um número' });
+  } else {
+    next();
+  }
+};
+
+app.put('/missions/:id', validateMissionID, async (req, res) => {
   const { id } = req.params;
   const updatedMissionData = req.body;
   const updatedMission = await updateMissionData(Number(id), updatedMissionData);
   return res.status(201).json({ mission: updatedMission });
 });
 
-app.delete('/missions/:id', async (req, res) => {
+app.delete('/missions/:id', validateMissionID, async (req, res) => {
     const { id } = req.params;
     await deleteMissionData(Number(id));
 
