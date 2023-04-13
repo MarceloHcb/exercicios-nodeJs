@@ -9,17 +9,6 @@ const {
 const app = express();
 app.use(express.json());
 
-app.get('/missions', async (_requisition, response) => {
-  const missions = await readMissionsData();
-  return response.status(200).json({ missions });
-});
-
-app.post('/missions', async (req, res) => {
-  const newMission = req.body;
-  const newMissionWithId = await whiteNewMissionData(newMission);
-  return res.status(201).json({ mission: newMissionWithId });
-});
-
 const validateMissionID = (req, res, next) => {
   const { id } = req.params;
   const idAsNumber = Number(id);
@@ -30,7 +19,29 @@ const validateMissionID = (req, res, next) => {
   }
 };
 
-app.put('/missions/:id', validateMissionID, async (req, res) => {
+const validateMissionData = (req, res, next) => {
+  const requiredProperties = ['name'];
+  if (requiredProperties.every((property) => property in req.body)) {
+    next();
+  } else {
+    res.status(400)
+    .send({ message: `A missão precisa receber o(os) atributo(os) ${requiredProperties
+    .map((required) => required)}` });
+  }
+};
+
+app.get('/missions', async (_requisition, response) => {
+  const missions = await readMissionsData();
+  return response.status(200).json({ missions });
+});
+
+app.post('/missions', validateMissionData, async (req, res) => {
+  const newMission = req.body;
+  const newMissionWithId = await whiteNewMissionData(newMission);
+  return res.status(201).json({ mission: newMissionWithId });
+});
+
+app.put('/missions/:id', validateMissionID, validateMissionData, async (req, res) => {
   const { id } = req.params;
   const updatedMissionData = req.body;
   const updatedMission = await updateMissionData(Number(id), updatedMissionData);
@@ -40,7 +51,6 @@ app.put('/missions/:id', validateMissionID, async (req, res) => {
 app.delete('/missions/:id', validateMissionID, async (req, res) => {
     const { id } = req.params;
     await deleteMissionData(Number(id));
-
     return res.status(204).end();
 });
 

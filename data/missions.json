@@ -1,8 +1,1 @@
-[
-  { "id": 1, "name": "Terra" },
-  { "id": 2, "name": "Jupter" },
-  { "id": 3, "name": "Saturno" },
-  { "id": 4, "name": "Mercúrio" },
-  { "id": 5, "name": "Vênus"},
-  { "id": 6, "name": "Marte"}
-]
+[{"id":1,"name":"Terra"},{"id":2,"name":"Jupter"},{"id":3,"name":"Saturno"},{"id":4,"name":"Mercúrio"},{"id":5,"name":"Vênus"},{"id":6,"name":"Marte"}]
