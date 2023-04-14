@@ -1,5 +1,5 @@
 # exercicios-nodeJs
-## Lê, Cria, Atualiza e Deleta informaçoes do arquivo missions.json, atravez de requisições para api 'npm run dev' ou terminal 'npm start'
+## Lê, Cria, Atualiza e Deleta informaçoes do arquivo missions.json "npm start", e também do banco de dados "npm run dev" atravez de requisições api
 ## efetua testes unitários e de integração
 ## npm install
 
