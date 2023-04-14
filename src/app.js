@@ -1,10 +1,5 @@
 const express = require('express');
-const {
-  readMissionsData,
-  whiteNewMissionData,
-  updateMissionData,
-  deleteMissionData,
-} = require('./utils/fsUtils');
+const { findAll, insert, update, deleteMission } = require('./db/missionsDb');
 
 const app = express();
 app.use(express.json());
@@ -31,26 +26,31 @@ const validateMissionData = (req, res, next) => {
 };
 
 app.get('/missions', async (_requisition, response) => {
-  const missions = await readMissionsData();
+  // const missions = await readMissionsData();
+  const missions = await findAll();
   return response.status(200).json({ missions });
 });
 
 app.post('/missions', validateMissionData, async (req, res) => {
   const newMission = req.body;
-  const newMissionWithId = await whiteNewMissionData(newMission);
+  // const newMissionWithId = await whiteNewMissionData(newMission);
+  const newMissionWithId = await insert(newMission);
   return res.status(201).json({ mission: newMissionWithId });
 });
 
 app.put('/missions/:id', validateMissionID, validateMissionData, async (req, res) => {
   const { id } = req.params;
   const updatedMissionData = req.body;
-  const updatedMission = await updateMissionData(Number(id), updatedMissionData);
+  console.log(updatedMissionData);
+  // const updatedMission = await updateMissionData(Number(id), updatedMissionData);
+  const updatedMission = await update(id, updatedMissionData);
   return res.status(201).json({ mission: updatedMission });
 });
 
 app.delete('/missions/:id', validateMissionID, async (req, res) => {
     const { id } = req.params;
-    await deleteMissionData(Number(id));
+    // await deleteMissionData(Number(id));
+    await deleteMission(id);
     return res.status(204).end();
 });
 
