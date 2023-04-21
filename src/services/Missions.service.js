@@ -11,7 +11,13 @@ const findMissionById = async (missionId) => {
     return { type: null, message: mission };
 };
 
+const createMission = async (newMissionBody) => {
+    const newMission = await MissionsModel.insert(newMissionBody);
+    return { type: null, message: newMission };
+};
+
 module.exports = {
     getAllMissions,
     findMissionById,
+    createMission,
 };
