@@ -10,11 +10,16 @@ const findById = async (id) => {
     return mission;
 };
 
-const insert = async ({ name, year, country, destination }) => {
+const insert = async (mission) => {
+    const columns = Object.keys(mission).join(', ');
+    const placeholders = Object.keys(mission)
+    .map((_key) => '?')
+    .join(', ');
+
     const [{ insertId }] = await connection.execute(
 `INSERT INTO missions
-    (name,year,country, destination) VALUES(?,?,?,?)`,
-    [name, year, country, destination],
+    (${columns}) VALUES(${placeholders})`,
+    [...Object.values(mission)],
 );
 return findById(insertId);
 };
@@ -35,6 +40,7 @@ const update = async (id, updateData) => {
 
 module.exports = {
     findAll,
+    findById,
     insert,
     update,
     deleteMission,
