@@ -1,4 +1,5 @@
 const { MissionsModel } = require('../models');
+const schema = require('./validations/validationsInputValues');
 
 const getAllMissions = async () => {
     const missions = await MissionsModel.findAll();
@@ -6,12 +7,24 @@ const getAllMissions = async () => {
 };
 
 const findMissionById = async (missionId) => {
-    const mission = await MissionsModel.findById(missionId);
-    if (!mission) return { type: 'MISSION_NOT_FOUND', message: 'Mission not found' };
+    const error = schema.validateId(missionId);
+    if (error.type) return error;
+    const mission = await MissionsModel.findById(missionId);    
+    if (mission.length === 0) {
+         return { type: 'MISSION_NOT_FOUND', message: 'Mission not found' };
+         }
     return { type: null, message: mission };
 };
 
 const createMission = async (newMissionBody) => {
+    if (newMissionBody.id) {
+        const error = schema.validateId(newMissionBody.id);
+        if (error.type) return error;
+        const duplicateId = MissionsModel.findById(newMissionBody.id);
+        if (duplicateId) {
+         return { type: 'DUPLICATE_ID', message: 'Já possui uma missão com esse id' }; 
+}
+    }
     const newMission = await MissionsModel.insert(newMissionBody);
     return { type: null, message: newMission };
 };
