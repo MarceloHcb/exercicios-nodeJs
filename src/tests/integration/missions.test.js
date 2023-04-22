@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const sinon = require('sinon');
 // const fs = require('fs');
-const connection = require('../../db/connection');
+const connection = require('../../models/connection');
 
 chai.use(chaiHttp);
 const { expect } = chai;
