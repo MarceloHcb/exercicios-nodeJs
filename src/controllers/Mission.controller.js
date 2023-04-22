@@ -21,8 +21,25 @@ const createNewMission = async (req, res) => {
     return res.status(201).json(message);
 };
 
+const updateMission = async (req, res) => {
+    const { id } = req.params;
+    const missionData = req.body;
+    const { type, message } = await MissionsService.updateMission(id, missionData);
+    if (type) return res.status(errorMap.mapError(type)).json(message);
+    return res.status(201).json({ missionupdated: { id, ...message } });
+};
+
+const deleteMission = async (req, res) => {
+    const { id } = req.params;
+    const { type, message } = await MissionsService.deleteMission(id);
+    if (type) return res.status(errorMap.mapError(type)).json(message);
+    return res.status(204).end();
+};
+
 module.exports = {
     listMissions,
     getMissionById,
     createNewMission,
+    updateMission,
+    deleteMission,
 };

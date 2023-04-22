@@ -1,3 +1,4 @@
+const { insertFunction, formattedColumns } = require('../utils/insertFunction');
 const connection = require('./connection');
 
 const findAll = async () => {
@@ -11,10 +12,7 @@ const findById = async (id) => {
 };
 
 const insert = async (mission) => {
-    const columns = Object.keys(mission).join(', ');
-    const placeholders = Object.keys(mission)
-    .map((_key) => '?')
-    .join(', ');
+   const { columns, placeholders } = insertFunction(mission); 
 
     const [{ insertId }] = await connection.execute(
 `INSERT INTO missions
@@ -25,17 +23,17 @@ return findById(insertId);
 };
 
 const update = async (id, updateData) => {
-    const [result] = await connection.execute(
-        'UPDATE missions SET name=? WHERE id=? ',
-        [updateData.name, id],
+   const columns = formattedColumns(updateData);    
+     await connection.execute(
+        `UPDATE missions SET ${columns} WHERE id=? `,
+        [...Object.values(updateData), id],
         );
-        return result;
+        return updateData;
     };
 
     const deleteMission = async (id) => {
-        const [result] = await connection.execute('DELETE FROM missions WHERE id=?;', [id]);
-        console.log('delete', result);
-        return { id };
+        await connection.execute('DELETE FROM missions WHERE id=?;', [id]);        
+        return `Missão ${id} deletada`;
     };
 
 module.exports = {
