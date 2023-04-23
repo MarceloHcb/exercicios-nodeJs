@@ -17,13 +17,11 @@ const findMissionById = async (missionId) => {
 };
 
 const createMission = async (newMissionBody) => {
+    const err = await schema.validateInputValues(newMissionBody);    
+    if (err.type) return err;    
     if (newMissionBody.id) {
         const error = schema.validateId(newMissionBody.id);
-        if (error.type) return error;
-        const duplicateId = MissionsModel.findById(newMissionBody.id);
-        if (duplicateId) {
-         return { type: 'DUPLICATE_ID', message: 'Já possui uma missão com esse id' }; 
-}
+        if (error.type) return error;      
     }
     const newMission = await MissionsModel.insert(newMissionBody);
     return { type: null, message: newMission };
