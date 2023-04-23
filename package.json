@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node ./src/index.js",
     "test": "mocha ./src/tests/**/*.test.js --exit",
-    "dev": "nodemon ./server.js"
+    "dev": "nodemon ./server.js",
+    "linter": "eslint ./src",
+    "test:coverage": "nyc --all --include src/models --include src/services --include src/controllers mocha tests/unit/**/*.js --exit"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "mocha": "10.0",
     "nodemon": "^2.0.22",
+    "nyc": "15.1.0",
     "sinon": "11.1.1"
   },
   "dependencies": {
