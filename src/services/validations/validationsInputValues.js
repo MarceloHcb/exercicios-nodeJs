@@ -3,7 +3,7 @@ const { idShema, schemaMissionValues } = require('./schemas');
 
 const validateId = (id) => {
     const { error } = idShema.validate(id);
-    if (error) return { type: 'INVALIDE_VALUE', message: '"id" must be a number' };
+    if (error) return { type: 'INVALIDE_ID_VALUE', message: '"id" must be a number' };
     return { type: null, message: '' };
 };
 

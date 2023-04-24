@@ -4,7 +4,6 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node ./src/index.js",
     "test": "mocha ./src/tests/**/*.test.js --exit",
     "dev": "nodemon ./server.js",
     "linter": "eslint ./src",
@@ -25,7 +24,8 @@
     "mocha": "10.0",
     "nodemon": "^2.0.22",
     "nyc": "15.1.0",
-    "sinon": "11.1.1"
+    "sinon": "11.1.1",
+    "sinon-chai": "3.7.0"
   },
   "dependencies": {
     "dotenv": "16.0",
