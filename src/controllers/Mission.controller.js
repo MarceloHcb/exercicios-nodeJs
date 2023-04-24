@@ -1,5 +1,5 @@
 const { MissionsService } = require('../services');
-const { errorMap } = require('../utils/errorMap');
+const errorMap = require('../utils/errorMap');
 
 const listMissions = async (_req, res) => {
     const { type, message } = await MissionsService.getAllMissions();

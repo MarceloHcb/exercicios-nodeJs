@@ -2,7 +2,7 @@ const { insertFunction, formattedColumns } = require('../utils/insertFunction');
 const connection = require('./connection');
 
 const findAll = async () => {
-    const [missions] = await connection.execute('SELECT * FROM missions');
+    const [missions] = await connection.execute('SELECT * FROM missions ORDER BY id');
     return missions;
 };
 
